@@ -67,24 +67,30 @@ function comparePast(a, b) {
   return `${b.startDate}${b.startTime || "00:00"}`.localeCompare(`${a.startDate}${a.startTime || "00:00"}`);
 }
 
-const all = events.map((event) => ({
-  ...event,
-  detailUrl: `/events/${event.slug}/`,
-  primaryAction: buildPrimaryAction(event),
-  secondaryLinks: buildSecondaryLinks(event),
-  monthKey: event.startDate.slice(0, 7),
-  searchText: [
-    event.title,
-    event.category,
-    event.organizer,
-    event.shortSummary,
-    event.locationName,
-    event.locationAddress,
-    ...(event.tags || [])
-  ]
-    .join(" ")
-    .toLowerCase()
-}));
+const all = events.map((event) => {
+  const hasIllustration = Boolean(event.image && event.image.startsWith("/assets/img/events/"));
+
+  return {
+    ...event,
+    detailUrl: `/events/${event.slug}/`,
+    primaryAction: buildPrimaryAction(event),
+    secondaryLinks: buildSecondaryLinks(event),
+    monthKey: event.startDate.slice(0, 7),
+    hasIllustration,
+    displayImage: hasIllustration ? null : event.image,
+    searchText: [
+      event.title,
+      event.category,
+      event.organizer,
+      event.shortSummary,
+      event.locationName,
+      event.locationAddress,
+      ...(event.tags || [])
+    ]
+      .join(" ")
+      .toLowerCase()
+  };
+});
 
 const upcoming = all.filter((event) => event.status === "upcoming").sort(compareUpcoming);
 const past = all.filter((event) => event.status === "past").sort(comparePast);

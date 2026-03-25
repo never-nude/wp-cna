@@ -1,6 +1,6 @@
 # WPCNA Site
 
-Modern static website rebuild for the White Plains Council of Neighborhood Associations, focused on clean event discovery and simple long-term maintenance.
+Modern static website for the White Plains Council of Neighborhood Associations, focused on clean event discovery, stronger local identity, and simple long-term maintenance.
 
 ## Project Structure
 
@@ -14,9 +14,10 @@ wpcna-site/
 │   ├── events/index.njk
 │   ├── events/event.njk
 │   ├── _data/
-│   │   ├── site.json
+│   │   ├── site.js
 │   │   ├── navigation.json
 │   │   ├── resources.json
+│   │   ├── neighborhoods.json
 │   │   ├── events.json
 │   │   └── eventStore.js
 │   ├── _includes/
@@ -104,9 +105,36 @@ Each event follows the same structure:
 
 ## Other Editable Content
 
-- Site-wide organization info: [`src/_data/site.json`](./src/_data/site.json)
+- Site-wide organization info and shared imagery references: [`src/_data/site.js`](./src/_data/site.js)
 - Header navigation: [`src/_data/navigation.json`](./src/_data/navigation.json)
 - Home/About resource cards: [`src/_data/resources.json`](./src/_data/resources.json)
+- Homepage neighborhood tiles: [`src/_data/neighborhoods.json`](./src/_data/neighborhoods.json)
+
+## Visual Refresh Notes
+
+This refinement pass keeps the existing Eleventy/Nunjucks structure and event data model intact, while updating the site's tone to feel more current, city-facing, and specific to White Plains.
+
+Key changes include:
+
+- a full sans-serif typography system
+- a cooler slate-and-navy civic palette
+- flatter, less rounded surface styling
+- a photography-led White Plains homepage hero
+- text-forward event cards with stronger date/location hierarchy
+- a new neighborhood section on the homepage
+
+## Imagery
+
+- Rights-clear White Plains photography lives in [`src/assets/img/photos`](./src/assets/img/photos).
+- Neighborhood tile images currently live in [`src/assets/img/neighborhoods`](./src/assets/img/neighborhoods) and are placeholder graphics designed to be swapped later if neighborhood-specific photography is sourced confidently.
+- Image sourcing and attribution notes live in [`IMAGE_SOURCING.md`](./IMAGE_SOURCING.md).
+
+### Replacing neighborhood placeholders later
+
+1. Add the new image file under `src/assets/img/neighborhoods/`.
+2. Update the matching item in `src/_data/neighborhoods.json`.
+3. Keep image filenames stable and descriptive.
+4. Add or update the attribution entry in `IMAGE_SOURCING.md`.
 
 ## Deployment
 
@@ -126,7 +154,7 @@ Typical deployment flow:
 
 ## Content Sourcing Notes
 
-This rebuild uses the current WPCNA site strictly as a content source, not a design reference.
+This project uses the current WPCNA site strictly as a content source, not a design reference.
 
 The event dataset combines:
 

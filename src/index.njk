@@ -1,47 +1,45 @@
 ---
 layout: layouts/base.njk
 title: Local Events in White Plains
-metaDescription: Browse upcoming White Plains civic, family, cultural, and neighborhood events curated by WPCNA.
+metaDescription: Find upcoming White Plains civic, family, cultural, and neighborhood events in a cleaner resident-first format from WPCNA.
 pageClass: page-home
 ---
-{% from "components/macros.njk" import eventCard, resourceCard %}
+{% from "components/macros.njk" import eventCard, neighborhoodCard, resourceCard %}
 
-<section class="hero">
-  <div class="container hero__grid">
-    <div class="hero__content">
-      <p class="eyebrow">White Plains Council of Neighborhood Associations</p>
-      <h1>Local Events in White Plains</h1>
-      <p class="hero__lede">A cleaner, faster way to find neighborhood, civic, family, and downtown events from WPCNA and trusted White Plains partners.</p>
-      <div class="hero__actions">
-        <a class="button button--large" href="{{ '/events/' | withPrefix }}">View all events</a>
-        <a class="button button--ghost button--large" href="{{ '/about/' | withPrefix }}">About WPCNA</a>
+<section class="hero hero--home">
+  <div class="container hero__stack">
+    <figure class="hero__frame">
+      <img src="{{ site.heroImage | withPrefix }}" alt="{{ site.heroImageAlt }}" loading="eager">
+      <div class="hero__overlay">
+        <div class="hero__content">
+          <p class="eyebrow">White Plains Council of Neighborhood Associations</p>
+          <h1>White Plains events, organized for city life.</h1>
+          <p class="hero__lede">Find civic meetings, neighborhood updates, workshops, and community events in one current, resident-friendly calendar.</p>
+          <div class="hero__actions">
+            <a class="button button--large" href="{{ '/events/' | withPrefix }}">View events</a>
+            <a class="button button--ghost button--large" href="{{ '/about/' | withPrefix }}">About WPCNA</a>
+          </div>
+        </div>
+        <figcaption class="hero__caption">
+          <strong>{{ site.heroImageLabel }}</strong>
+          <span>{{ site.heroImageSummary }}</span>
+        </figcaption>
       </div>
-      <ul class="hero__stats" aria-label="Site highlights">
-        <li><strong>{{ eventStore.upcoming.length }}</strong><span>upcoming events</span></li>
-        <li><strong>{{ eventStore.past.length }}</strong><span>clean archive items</span></li>
-        <li><strong>1</strong><span>clear next step per event</span></li>
-      </ul>
-    </div>
-
-    <aside class="hero__panel">
-      <p class="eyebrow">At a glance</p>
-      <h2>Built for residents first</h2>
-      <ul class="hero__checklist">
-        <li>Upcoming events surface first</li>
-        <li>Past items stay browseable without clutter</li>
-        <li>Cards stay brief, consistent, and mobile-friendly</li>
-        <li>Admins only edit structured event data, not page markup</li>
-      </ul>
-    </aside>
+    </figure>
+    <ul class="hero__stats" aria-label="Site highlights">
+      <li><span>Upcoming</span><strong>{{ eventStore.upcoming.length }}</strong></li>
+      <li><span>Archive</span><strong>{{ eventStore.past.length }}</strong></li>
+      <li><span>Every listing</span><strong>1 clear action</strong></li>
+    </ul>
   </div>
 </section>
 
-<section class="section">
+<section class="section section--flush-top">
   <div class="container section__intro">
     <div>
       <p class="eyebrow">Featured Upcoming Events</p>
-      <h2>What residents can act on right now</h2>
-      <p>Each listing highlights the essentials: when it happens, where it is, what it is, and the one next action to take.</p>
+      <h2>Current events across White Plains</h2>
+      <p>Each listing is structured around the essentials: title, date, location, and the one next step a resident should take.</p>
     </div>
     <a class="text-link" href="{{ '/events/' | withPrefix }}">View all events</a>
   </div>
@@ -64,9 +62,24 @@ pageClass: page-home
 <section class="section section--tint">
   <div class="container section__intro">
     <div>
-      <p class="eyebrow">Neighborhood Resources</p>
-      <h2>Useful WPCNA links beyond the calendar</h2>
-      <p>Meeting details, workshop materials, and neighborhood context belong close at hand, not buried in a navigation pile-up.</p>
+      <p class="eyebrow">Neighborhoods</p>
+      <h2>Neighborhoods that shape White Plains</h2>
+      <p>WPCNA works citywide, but its perspective starts with the neighborhoods and associations that give White Plains its local character.</p>
+    </div>
+  </div>
+  <div class="container neighborhood-grid">
+    {% for neighborhood in neighborhoods %}
+      {{ neighborhoodCard(neighborhood) }}
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="container section__intro">
+    <div>
+      <p class="eyebrow">Get Involved</p>
+      <h2>Useful civic links for residents and neighborhood leaders</h2>
+      <p>Meeting materials, workshop resources, and neighborhood reference pages should stay accessible without competing with the event calendar.</p>
     </div>
   </div>
   <div class="container resource-grid">
@@ -79,8 +92,8 @@ pageClass: page-home
 <section class="section">
   <div class="container spotlight">
     <div>
-      <p class="eyebrow">Why WPCNA</p>
-      <h2>A neighborhood-centered civic lens</h2>
+      <p class="eyebrow">About WPCNA</p>
+      <h2>A current civic front door for neighborhood life</h2>
       <p>{{ site.mission }}</p>
       <p>{{ site.meetingNote }}</p>
     </div>

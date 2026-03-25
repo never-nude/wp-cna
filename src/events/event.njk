@@ -9,7 +9,6 @@ eleventyComputed:
   title: "{{ event.title }}"
   metaDescription: "{{ event.shortSummary }}"
   ogType: "article"
-  ogImage: "{{ event.image }}"
   pageClass: "page-event-detail"
 ---
 <section class="page-hero page-hero--compact">
@@ -24,14 +23,19 @@ eleventyComputed:
 <section class="section section--flush-top">
   <div class="container detail-grid">
     <article class="detail-main">
-      <div class="detail-image">
-        <img src="{{ event.image | withPrefix }}" alt="" loading="eager">
-      </div>
+      {% if event.displayImage %}
+        <div class="detail-image">
+          <img src="{{ event.displayImage | withPrefix }}" alt="" loading="eager">
+        </div>
+      {% endif %}
 
       <div class="detail-copy">
         <div class="detail-copy__meta">
-          <span class="tag">{{ event.status }}</span>
+          <span class="tag">{{ event.category }}</span>
           <span>Shared from {{ event.organizer }}</span>
+          {% if event.status == "past" %}
+            <span class="event-card__status">Past event</span>
+          {% endif %}
         </div>
 
         <h2>About this event</h2>
@@ -54,6 +58,10 @@ eleventyComputed:
       <div class="detail-card">
         <p class="eyebrow">Key Details</p>
         <dl class="detail-list">
+          <div>
+            <dt>Status</dt>
+            <dd>{% if event.status == "upcoming" %}Upcoming{% else %}Past event{% endif %}</dd>
+          </div>
           <div>
             <dt>Date</dt>
             <dd>{{ event | dateLabel }}</dd>

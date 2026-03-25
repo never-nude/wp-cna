@@ -1,7 +1,7 @@
 <footer class="site-footer">
   <div class="container site-footer__grid">
-    <div>
-      <p class="eyebrow">About WPCNA</p>
+    <div class="site-footer__block">
+      <p class="eyebrow">White Plains</p>
       <h2>{{ site.name }}</h2>
       <p>{{ site.mission }}</p>
     </div>
@@ -13,10 +13,11 @@
         <li>{{ site.location }}</li>
         <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
       </ul>
+      <p class="site-footer__note">{{ site.meetingNote }}</p>
     </div>
 
     <div>
-      <p class="eyebrow">Community Channels</p>
+      <p class="eyebrow">Useful Links</p>
       <ul class="footer-list">
         {% for link in site.communityChannels %}
           <li><a href="{{ link.url }}" target="_blank" rel="noreferrer">{{ link.label }}</a></li>
@@ -25,8 +26,7 @@
     </div>
   </div>
   <div class="container site-footer__meta">
-    <p>Curated from WPCNA and trusted White Plains community sources.</p>
+    <p>Built as a lightweight public events guide for residents across White Plains.</p>
     <p><a href="{{ site.currentSiteUrl }}" target="_blank" rel="noreferrer">Current WPCNA site</a></p>
   </div>
 </footer>
-
