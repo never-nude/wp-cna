@@ -1,25 +1,25 @@
 [
   {
     "name": "Fisher Hill",
-    "summary": "A longstanding White Plains neighborhood that reflects the city's local scale and residential character.",
+    "summary": "A longtime White Plains neighborhood with a quieter residential feel.",
     "image": "/assets/img/neighborhoods/fisher-hill.svg",
     "imageAlt": "Placeholder graphic representing Fisher Hill in White Plains."
   },
   {
     "name": "The Highlands",
-    "summary": "One of the neighborhoods that helps give White Plains its mix of city energy and everyday community life.",
+    "summary": "A neighborhood that shows the day-to-day side of life in White Plains.",
     "image": "/assets/img/neighborhoods/the-highlands.svg",
     "imageAlt": "Placeholder graphic representing The Highlands in White Plains."
   },
   {
     "name": "Gedney Farms",
-    "summary": "A distinctive part of White Plains' neighborhood fabric and a reminder that the city is more than its downtown core.",
+    "summary": "Part of White Plains with its own look, history, and neighborhood identity.",
     "image": "/assets/img/neighborhoods/gedney-farms.svg",
     "imageAlt": "Placeholder graphic representing Gedney Farms in White Plains."
   },
   {
     "name": "Rosedale",
-    "summary": "Another neighborhood perspective within White Plains' broader civic and community network.",
+    "summary": "One more piece of the city's neighborhood fabric, close to the rest but distinct in its own way.",
     "image": "/assets/img/neighborhoods/rosedale.svg",
     "imageAlt": "Placeholder graphic representing Rosedale in White Plains."
   }

@@ -1,24 +1,23 @@
 [
   {
-    "title": "Monthly Meetings & Agendas",
-    "summary": "WPCNA meetings are typically held on the second Tuesday of each month. Residents can use the agendas archive to follow neighborhood issues and upcoming meetings.",
+    "title": "Meeting agendas",
+    "summary": "If you want to follow what WPCNA is talking about, start here.",
     "url": "https://wp-cna.org/agendas",
     "ctaLabel": "See agendas",
-    "eyebrow": "Civic Resource"
+    "eyebrow": "WPCNA"
   },
   {
-    "title": "Neighborhood Workshop Materials",
-    "summary": "Workshop materials for residents who want help starting, organizing, or reinvigorating a neighborhood association in White Plains.",
+    "title": "Workshop materials",
+    "summary": "These materials are for people in White Plains who want to start a neighborhood association, bring one back, or figure out the next step.",
     "url": "https://wp-cna.org/wpcna-workshop-materials",
-    "ctaLabel": "Open materials",
-    "eyebrow": "WPCNA Resource"
+    "ctaLabel": "Get the materials",
+    "eyebrow": "WPCNA"
   },
   {
-    "title": "White Plains Neighborhood Map",
-    "summary": "A visual reference for the neighborhoods that make up White Plains and the communities WPCNA supports.",
+    "title": "Neighborhood map",
+    "summary": "A simple map of the neighborhoods that make up White Plains.",
     "url": "https://wp-cna.org/neighborhood-map",
-    "ctaLabel": "View map",
-    "eyebrow": "Community Resource"
+    "ctaLabel": "Open map",
+    "eyebrow": "White Plains"
   }
 ]
-

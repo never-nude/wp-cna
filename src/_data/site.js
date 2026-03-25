@@ -5,35 +5,35 @@ const cleanPrefix = sitePathPrefix === "/" ? "" : sitePathPrefix.replace(/\/$/, 
 module.exports = {
   name: "White Plains Council of Neighborhood Associations",
   shortName: "WPCNA",
-  tagline: "Current events and neighborhood connection across White Plains.",
+  tagline: "Events and neighborhood updates around White Plains.",
   baseUrl: `${deployBaseUrl.replace(/\/$/, "")}${cleanPrefix}`,
   pathPrefix: sitePathPrefix,
   contactName: "Michael Dalton, President",
   email: "michael@mdalton.com",
   location: "White Plains, New York, United States",
   currentSiteUrl: "https://wp-cna.org/",
-  defaultOgImage: "/assets/img/photos/white-plains-downtown-street.jpg",
-  heroImage: "/assets/img/photos/white-plains-downtown-street.jpg",
-  heroImageAlt: "Street-level view of downtown White Plains with office towers, traffic lights, and surrounding city blocks.",
-  heroImageLabel: "Downtown White Plains",
-  heroImageSummary: "Street-level view of the city center.",
-  aboutImage: "/assets/img/photos/white-plains-downtown-street.jpg",
-  aboutImageAlt: "Downtown White Plains with towers, streetlights, and surrounding city blocks.",
+  defaultOgImage: "/assets/img/photos/white-plains-main.jpeg",
+  heroImage: "/assets/img/photos/white-plains-main.jpeg",
+  heroImageAlt: "Aerial view of downtown White Plains with residential neighborhoods and hills rising behind the skyline.",
+  heroImageLabel: "White Plains from above",
+  heroImageSummary: "Downtown at the center, with White Plains neighborhoods rising behind it.",
+  aboutImage: "/assets/img/photos/white-plains-main.jpeg",
+  aboutImageAlt: "Aerial view of downtown White Plains with nearby neighborhoods in the background.",
   mission:
-    "WPCNA helps residents and neighborhood associations across White Plains find current civic, cultural, and community events without digging through cluttered pages or pasted announcements.",
+    "We're a group of neighborhood associations working together to help people stay informed and connected across White Plains.",
   meetingNote:
-    "WPCNA meetings are typically held on the second Tuesday of each month at 7:00 p.m. Agenda details are posted as they are confirmed.",
+    "WPCNA usually meets on the second Tuesday of the month at 7:00 p.m. We share agenda details when they're ready.",
   communityChannels: [
     {
-      label: "White Plains BID Instagram",
+      label: "White Plains BID on Instagram",
       url: "https://www.instagram.com/whiteplains.bid/"
     },
     {
-      label: "White Plains Public Library Calendar",
+      label: "Library event calendar",
       url: "https://calendar.whiteplainslibrary.org/"
     },
     {
-      label: "City of White Plains Calendar",
+      label: "City calendar",
       url: "https://www.cityofwhiteplains.com/Calendar.aspx"
     }
   ]

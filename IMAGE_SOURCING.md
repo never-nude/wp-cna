@@ -6,16 +6,21 @@ This file documents the imagery currently used in the WPCNA site refresh and exp
 
 ### Homepage hero and about page image
 
+- File: `src/assets/img/photos/white-plains-main.jpeg`
+- Source: user-provided local image
+- Original file: `/Users/michael/Desktop/white plains.jpeg`
+- Notes: Copied into the project for the current hero and about image on March 25, 2026.
+
+### Alternate Rights-Clear White Plains Photography
+
+These assets remain in the project and can be reused later, but they are not the current featured hero:
+
 - File: `src/assets/img/photos/white-plains-downtown-street.jpg`
 - Source page: <https://commons.wikimedia.org/wiki/File:Downtown_White_Plains,_NY_2010-05-20.jpg>
 - Title: `Downtown White Plains, NY 2010-05-20`
 - Creator: `Paul Sableman`
 - License: `CC BY 2.0`
 - Notes: Downloaded from Wikimedia Commons and resized locally for site use.
-
-## Alternate Local Photos
-
-These assets remain in the project and can be reused later, but they are not the current featured hero:
 
 - File: `src/assets/img/photos/white-plains-downtown-hero.jpg`
 - Source page: <https://commons.wikimedia.org/wiki/File:Downtown_White_Plains_from_the_NE.jpg>

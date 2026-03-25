@@ -1,7 +1,7 @@
 ---
 layout: layouts/base.njk
 title: Events
-metaDescription: Explore upcoming and past White Plains events curated for residents by WPCNA.
+metaDescription: See what's coming up in White Plains and look back at past events.
 pageClass: page-events
 ---
 {% from "components/macros.njk" import eventCard %}
@@ -9,8 +9,8 @@ pageClass: page-events
 <section class="page-hero page-hero--compact">
   <div class="container page-hero__content">
     <p class="eyebrow">Events</p>
-    <h1>White Plains events, organized to scan fast.</h1>
-    <p>Upcoming events stay at the top, archive items stay available below, and every listing keeps the date, time, location, and next action easy to spot.</p>
+    <h1>Events in White Plains</h1>
+    <p>What's coming up is first. Older events are below if you want to look back.</p>
   </div>
 </section>
 
@@ -19,7 +19,7 @@ pageClass: page-events
     <form class="filter-bar" data-event-filters>
       <label>
         <span>Search</span>
-        <input type="search" name="search" placeholder="Search events, locations, or tags">
+        <input type="search" name="search" placeholder="Search by event, place, or tag">
       </label>
 
       <label>
@@ -42,7 +42,7 @@ pageClass: page-events
         </select>
       </label>
 
-      <button class="button button--ghost" type="reset">Reset</button>
+      <button class="button button--ghost" type="reset">Clear filters</button>
     </form>
   </div>
 </section>
@@ -50,10 +50,10 @@ pageClass: page-events
 <section class="section section--flush-top" data-event-section>
   <div class="container section__intro">
     <div>
-      <p class="eyebrow">Upcoming Events</p>
-      <h2>Plan what is next</h2>
+      <p class="eyebrow">Coming Up</p>
+      <h2>Here's what's coming up</h2>
     </div>
-    <p class="section__count" data-event-count>{{ eventStore.upcoming.length }} items</p>
+    <p class="section__count" data-event-count>{{ eventStore.upcoming.length }} events</p>
   </div>
 
   {% if eventStore.upcoming.length %}
@@ -64,14 +64,14 @@ pageClass: page-events
     </div>
   {% else %}
     <div class="container empty-state">
-      <h3>No upcoming events yet.</h3>
-      <p>Add the next event to the structured data file and it will appear here automatically.</p>
+      <h3>Nothing is on the calendar right now.</h3>
+      <p>Check back soon for the next White Plains event.</p>
     </div>
   {% endif %}
 
   <div class="container empty-state empty-state--inline" hidden data-filter-empty>
-    <h3>No events match the current filters.</h3>
-    <p>Try clearing search terms or changing the category and month filters.</p>
+    <h3>Nothing matches that search.</h3>
+    <p>Try a different word, month, or category.</p>
   </div>
 </section>
 
@@ -81,21 +81,21 @@ pageClass: page-events
       <summary>
         <span>
           <span class="eyebrow">Past Events</span>
-          <strong>Browse the archive</strong>
+          <strong>Look back at past events</strong>
         </span>
-        <span class="archive-panel__count">{{ eventStore.past.length }} items</span>
+        <span class="archive-panel__count">{{ eventStore.past.length }} events</span>
       </summary>
 
       <div class="archive-panel__content" data-event-section>
-        <p class="archive-panel__intro">Past events remain available for reference, but the archive is intentionally quieter so current activity always leads the page.</p>
+        <p class="archive-panel__intro">Older events stay here if you want them, but they don't get in the way of what's next.</p>
         <div class="card-grid card-grid--past">
           {% for event in eventStore.past %}
             {{ eventCard(event) }}
           {% endfor %}
         </div>
         <div class="empty-state empty-state--inline" hidden data-filter-empty>
-          <h3>No archived events match the current filters.</h3>
-          <p>Try a broader search or clear the current filters.</p>
+          <h3>Nothing in the archive matches that.</h3>
+          <p>Try a broader search or clear the filters.</p>
         </div>
       </div>
     </details>

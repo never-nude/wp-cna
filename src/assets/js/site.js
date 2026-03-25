@@ -65,7 +65,7 @@ if (filterForm) {
       const emptyNode = section.querySelector("[data-filter-empty]");
 
       if (countNode) {
-        countNode.textContent = `${visibleCards} item${visibleCards === 1 ? "" : "s"}`;
+        countNode.textContent = `${visibleCards} event${visibleCards === 1 ? "" : "s"}`;
       }
 
       if (emptyNode) {

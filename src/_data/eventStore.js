@@ -24,14 +24,14 @@ function scoreRelated(baseEvent, candidate) {
 function buildPrimaryAction(event) {
   if (event.externalUrl) {
     return {
-      label: event.ctaLabel || "Learn more",
+      label: event.ctaLabel || "Get info",
       url: event.externalUrl
     };
   }
 
   if (event.flyerPdf) {
     return {
-      label: event.ctaLabel || "Download flyer",
+      label: event.ctaLabel || "Open flyer",
       url: event.flyerPdf
     };
   }
@@ -44,14 +44,14 @@ function buildSecondaryLinks(event) {
 
   if (event.flyerPdf && event.flyerPdf !== event.externalUrl) {
     links.push({
-      label: "Flyer / PDF",
+      label: "Open flyer (PDF)",
       url: event.flyerPdf
     });
   }
 
   if (event.sourceUrl && event.sourceUrl !== event.externalUrl) {
     links.push({
-      label: event.sourceLabel || "Source",
+      label: event.sourceLabel || "Original source",
       url: event.sourceUrl
     });
   }

@@ -13,7 +13,7 @@ eleventyComputed:
 ---
 <section class="page-hero page-hero--compact">
   <div class="container page-hero__content">
-    <a class="back-link" href="{{ '/events/' | withPrefix }}">Back to all events</a>
+    <a class="back-link" href="{{ '/events/' | withPrefix }}">Back to events</a>
     <p class="eyebrow">{{ event.category }}</p>
     <h1>{{ event.title }}</h1>
     <p>{{ event.shortSummary }}</p>
@@ -32,18 +32,18 @@ eleventyComputed:
       <div class="detail-copy">
         <div class="detail-copy__meta">
           <span class="tag">{{ event.category }}</span>
-          <span>Shared from {{ event.organizer }}</span>
+          <span>From {{ event.organizer }}</span>
           {% if event.status == "past" %}
             <span class="event-card__status">Past event</span>
           {% endif %}
         </div>
 
-        <h2>About this event</h2>
+        <h2>What to know</h2>
         {{ event.fullDescription | paragraphs | safe }}
 
         {% if event.secondaryLinks.length %}
           <div class="detail-links">
-            <h3>Additional links</h3>
+            <h3>More info</h3>
             <ul class="footer-list">
               {% for link in event.secondaryLinks %}
                 <li><a href="{{ link.url }}" target="_blank" rel="noreferrer">{{ link.label }}</a></li>
@@ -56,7 +56,7 @@ eleventyComputed:
 
     <aside class="detail-sidebar">
       <div class="detail-card">
-        <p class="eyebrow">Key Details</p>
+        <p class="eyebrow">Event Details</p>
         <dl class="detail-list">
           <div>
             <dt>Status</dt>
@@ -71,7 +71,7 @@ eleventyComputed:
             <dd>{{ event | timeLabel }}</dd>
           </div>
           <div>
-            <dt>Location</dt>
+            <dt>Place</dt>
             <dd>{{ event.locationName }}</dd>
           </div>
           <div>
@@ -79,7 +79,7 @@ eleventyComputed:
             <dd>{{ event.locationAddress }}</dd>
           </div>
           <div>
-            <dt>Source</dt>
+            <dt>Source page</dt>
             <dd>{{ event.sourceLabel }}</dd>
           </div>
         </dl>
@@ -99,8 +99,8 @@ eleventyComputed:
   <section class="section section--tint">
     <div class="container section__intro">
       <div>
-        <p class="eyebrow">Related Events</p>
-        <h2>Keep exploring</h2>
+        <p class="eyebrow">More Events</p>
+        <h2>More to check out</h2>
       </div>
     </div>
     <div class="container card-grid">
