@@ -1,4 +1,5 @@
 const neighborhoods = require("./neighborhoods");
+const neighborhoodHeroes = require("./neighborhood-heroes.json");
 
 const groupDescriptions = {
   "Central White Plains":
@@ -67,23 +68,23 @@ function splitSentences(text = "") {
   return matches ? matches.map((sentence) => sentence.trim()).filter(Boolean) : [];
 }
 
-function joinNatural(items = []) {
-  if (items.length <= 1) {
-    return items[0] || "";
-  }
-
-  if (items.length === 2) {
-    return `${items[0]} and ${items[1]}`;
-  }
-
-  return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
-}
-
 function extractReferencePoints(description = "") {
   const lowerDescription = description.toLowerCase();
 
   return referencePhrases.filter((phrase) => lowerDescription.includes(phrase.toLowerCase()));
 }
+
+const heroBySlug = Object.fromEntries(
+  neighborhoodHeroes
+    .filter((hero) => hero.status === "approved")
+    .map((hero) => [
+      hero.slug,
+      {
+        ...hero,
+        imagePath: `/assets/img/neighborhoods/${hero.localFilename}`
+      }
+    ])
+);
 
 const baseNeighborhoods = neighborhoods.map((item, index) => {
   const groupSlug = toKebab(item.group);
@@ -100,9 +101,6 @@ const baseNeighborhoods = neighborhoods.map((item, index) => {
   );
   const cardContext = referencePoints.slice(0, 2).join(" • ");
   const detailParagraphs = sentences.length > 1 ? sentences.slice(1) : [item.description];
-  const anchorSentence = referencePoints.length
-    ? `On the White Plains map, people usually place this area by ${joinNatural(referencePoints.slice(0, 2))}.`
-    : "";
 
   return {
     ...item,
@@ -110,10 +108,10 @@ const baseNeighborhoods = neighborhoods.map((item, index) => {
     groupSlug,
     groupDescription: groupDescriptions[item.group] || "",
     orientationNote: groupOrientationNotes[item.group] || "",
+    hero: heroBySlug[item.slug] || null,
     detailUrl,
     teaser: sentences[0] || firstSentence(item.description),
     detailParagraphs,
-    anchorSentence,
     metaDescription: `Learn about ${item.name}, part of ${item.group}.`,
     initials,
     referencePoints,

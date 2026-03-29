@@ -8,14 +8,33 @@ layout: layouts/base.njk
 eleventyComputed:
   title: "{{ neighborhood.name }}"
   metaDescription: "{{ neighborhood.metaDescription }}"
+  ogImage: "{{ neighborhood.hero and neighborhood.hero.imagePath or site.defaultOgImage }}"
   pageClass: "page-neighborhood-detail"
 ---
 <section class="page-hero page-hero--compact">
-  <div class="container page-hero__content">
-    <a class="back-link" href="{{ '/neighborhoods/' | withPrefix }}">Back to neighborhoods</a>
-    <p class="eyebrow">{{ neighborhood.group }}</p>
-    <h1>{{ neighborhood.name }}</h1>
-    <p>{{ neighborhood.teaser }}</p>
+  <div class="container page-hero__shell{% if neighborhood.hero %} page-hero__shell--with-media{% endif %}">
+    <div class="page-hero__content">
+      <a class="back-link" href="{{ '/neighborhoods/' | withPrefix }}">Back to neighborhoods</a>
+      <p class="eyebrow">{{ neighborhood.group }}</p>
+      <h1>{{ neighborhood.name }}</h1>
+      <p>{{ neighborhood.teaser }}</p>
+    </div>
+
+    {% if neighborhood.hero %}
+      <figure class="page-hero__media page-hero__media--neighborhood">
+        <img
+          src="{{ neighborhood.hero.imagePath | withPrefix }}"
+          alt="{{ neighborhood.hero.altText }}"
+          loading="eager"
+          decoding="async"
+        >
+        <figcaption class="page-hero__credit">
+          <span>Photo: {{ neighborhood.hero.attributionText }}</span>
+          <a href="{{ neighborhood.hero.attributionUrl }}" rel="external noopener">Source</a>
+          <span>{{ neighborhood.hero.license }}</span>
+        </figcaption>
+      </figure>
+    {% endif %}
   </div>
 </section>
 
@@ -32,20 +51,6 @@ eleventyComputed:
         {% for paragraph in neighborhood.detailParagraphs %}
           <p>{{ paragraph }}</p>
         {% endfor %}
-
-        {% if neighborhood.anchorSentence or neighborhood.referencePoints.length %}
-          <div class="detail-links">
-            <h3>On the local map</h3>
-            {% if neighborhood.anchorSentence %}
-              <p>{{ neighborhood.anchorSentence }}</p>
-            {% endif %}
-            <ul class="detail-pill-list" aria-label="Local reference points">
-              {% for item in neighborhood.referencePoints %}
-                <li>{{ item }}</li>
-              {% endfor %}
-            </ul>
-          </div>
-        {% endif %}
 
         <div class="detail-links">
           <h3>In the wider White Plains picture</h3>

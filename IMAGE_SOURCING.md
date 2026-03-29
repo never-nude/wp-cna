@@ -45,9 +45,26 @@ The homepage neighborhood section currently uses locally created placeholder gra
 
 These are intentionally temporary. They avoid using uncertain or copyrighted real-estate photography while keeping the layout ready for future neighborhood-specific imagery.
 
+## Neighborhood Hero System
+
+Neighborhood detail pages now use a vetted hero-image mapping:
+
+- Data file: `src/_data/neighborhood-heroes.json`
+- Audit and source table: `NEIGHBORHOOD_IMAGE_AUDIT.md`
+- Local assets: `src/assets/img/neighborhoods/`
+
+This system uses a mix of:
+
+- direct neighborhood matches where Wikimedia Commons surfaced a clearly relevant image
+- landmark-based matches where a nearby civic or institutional image better represents the neighborhood
+- no hero image on pages where a safe neighborhood-specific match has not been confirmed yet
+
+Attribution is shown directly on neighborhood pages below the hero image.
+
 ## Replacement Workflow
 
 1. Source a neighborhood image with clearly reusable rights.
 2. Save it under `src/assets/img/neighborhoods/`.
-3. Update the corresponding item in `src/_data/neighborhoods.json`.
-4. Replace the placeholder entry in this file with the real attribution details.
+3. Update the corresponding item in `src/_data/neighborhood-heroes.json`.
+4. Regenerate or update `NEIGHBORHOOD_IMAGE_AUDIT.md` so the audit table stays in sync.
+5. Replace the placeholder entry in this file with the real attribution details if the sourcing notes change.
