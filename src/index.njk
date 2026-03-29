@@ -1,7 +1,7 @@
 ---
 layout: layouts/base.njk
 title: What's Happening in White Plains
-metaDescription: Local events, meetings, and things to know around White Plains.
+metaDescription: A neighborhood-centered guide to events, civic life, and useful local information around White Plains.
 pageClass: page-home
 ---
 {% from "components/macros.njk" import eventCard, neighborhoodCard, resourceCard %}
@@ -14,7 +14,7 @@ pageClass: page-home
         <div class="hero__content">
           <p class="eyebrow">White Plains Council of Neighborhood Associations</p>
           <h1>What's happening in White Plains</h1>
-          <p class="hero__lede">Local events, meetings, and things to know, all in one place.</p>
+          <p class="hero__lede">A White Plains guide to local events, neighborhoods, and civic life.</p>
           <div class="hero__actions">
             <a class="button button--large" href="{{ '/events/' | withPrefix }}">View events</a>
             <a class="button button--ghost button--large" href="{{ '/about/' | withPrefix }}">About WPCNA</a>
@@ -24,8 +24,8 @@ pageClass: page-home
     </figure>
     <ul class="hero__stats" aria-label="Site highlights">
       <li><span>Coming up</span><strong>{{ eventStore.upcoming.length }}</strong></li>
-      <li><span>Past events</span><strong>{{ eventStore.past.length }}</strong></li>
-      <li><span>Each event</span><strong>1 clear next step</strong></li>
+      <li><span>Neighborhoods</span><strong>{{ neighborhoodStore.count }}</strong></li>
+      <li><span>Civic guide</span><strong>Events, neighborhoods, key links</strong></li>
     </ul>
   </div>
 </section>
@@ -34,8 +34,8 @@ pageClass: page-home
   <div class="container section__intro">
     <div>
       <p class="eyebrow">Coming Up</p>
-      <h2>Here's what's happening</h2>
-      <p>You can scan the basics fast: what it is, when it is, where it is, and what to click next.</p>
+      <h2>Upcoming events around White Plains</h2>
+      <p>This is a shorter White Plains calendar, not a mirror of every feed. We focus on the public meetings, arts events, downtown happenings, and neighborhood-relevant programs residents are most likely to want on their radar.</p>
     </div>
     <a class="text-link" href="{{ '/events/' | withPrefix }}">See all events</a>
   </div>
@@ -49,8 +49,8 @@ pageClass: page-home
   {% else %}
     <div class="container empty-state">
       <h3>Nothing is posted right now.</h3>
-      <p>Check back soon, look through past events, or email WPCNA if you're trying to track something specific.</p>
-      <a class="button" href="{{ '/events/' | withPrefix }}">See past events</a>
+      <p>Check back soon, look through past events, or email WPCNA if you are trying to track something specific.</p>
+      <a class="button" href="{{ '/events/' | withPrefix }}">Browse events</a>
     </div>
   {% endif %}
 </section>
@@ -59,14 +59,28 @@ pageClass: page-home
   <div class="container section__intro">
     <div>
       <p class="eyebrow">Neighborhoods</p>
-      <h2>White Plains neighborhoods</h2>
-      <p>WPCNA covers the whole city, but neighborhood life is where a lot of White Plains starts.</p>
+      <h2>Browse White Plains by neighborhood</h2>
+      <p>From Downtown and Church Street to Gedney, Battle Hill, Rosedale, and Saxon Woods, this guide helps you read White Plains as neighborhoods, not just one blur on a map.</p>
     </div>
+    <a class="text-link" href="{{ '/neighborhoods/' | withPrefix }}">See all neighborhoods</a>
   </div>
-  <div class="container neighborhood-grid">
-    {% for neighborhood in neighborhoods %}
-      {{ neighborhoodCard(neighborhood) }}
-    {% endfor %}
+  <div class="container carousel" data-carousel>
+    <div class="carousel__header">
+      <p class="section__count">{{ neighborhoodStore.count }} neighborhoods</p>
+      <div class="carousel__controls">
+        <button class="carousel__control" type="button" data-carousel-prev aria-label="Scroll neighborhoods backward">
+          Previous
+        </button>
+        <button class="carousel__control" type="button" data-carousel-next aria-label="Scroll neighborhoods forward">
+          Next
+        </button>
+      </div>
+    </div>
+    <div class="carousel__viewport" data-carousel-track>
+      {% for neighborhood in neighborhoodStore.all %}
+        {{ neighborhoodCard(neighborhood) }}
+      {% endfor %}
+    </div>
   </div>
 </section>
 
@@ -74,8 +88,8 @@ pageClass: page-home
   <div class="container section__intro">
     <div>
       <p class="eyebrow">Useful Links</p>
-      <h2>A few pages you may want</h2>
-      <p>If you're looking for agendas, workshop materials, or the neighborhood map, start here.</p>
+      <h2>Useful White Plains pages</h2>
+      <p>A few White Plains pages residents end up using again and again.</p>
     </div>
   </div>
   <div class="container resource-grid">
@@ -90,14 +104,14 @@ pageClass: page-home
     <div>
       <p class="eyebrow">About WPCNA</p>
       <h2>Why this site exists</h2>
-      <p>{{ site.mission }}</p>
-      <p>{{ site.meetingNote }}</p>
+      <p>{{ site.purpose }}</p>
+      <p>WPCNA keeps a neighborhood perspective in the civic conversation. This site gives residents a clear place to start.</p>
     </div>
     <div class="spotlight__card">
       <p class="eyebrow">Contact</p>
       <h3>{{ site.contactName }}</h3>
       <p>{{ site.location }}</p>
-      <a class="button button--ghost" href="mailto:{{ site.email }}">Email us</a>
+      <a class="button button--ghost" href="mailto:{{ site.email }}">Get in touch</a>
     </div>
   </div>
 </section>

@@ -14,6 +14,22 @@ const TIME_ZONE = "America/New_York";
 const MAX_UPCOMING_PER_MONTH = 20;
 const MAX_UPCOMING_PER_SERIES_PER_MONTH = 3;
 const MIN_UPCOMING_SELECTION_SCORE = 10;
+const HTML_ENTITY_MAP = {
+  "&amp;": "&",
+  "&quot;": "\"",
+  "&#39;": "'",
+  "&#8217;": "'",
+  "&rsquo;": "'",
+  "&ldquo;": "\"",
+  "&rdquo;": "\"",
+  "&#8220;": "\"",
+  "&#8221;": "\"",
+  "&reg;": "",
+  "&nbsp;": " ",
+  "&ndash;": "-",
+  "&mdash;": "-",
+  "&hellip;": "..."
+};
 
 function getTodayIso() {
   return new Intl.DateTimeFormat("en-CA", {
@@ -44,6 +60,170 @@ function normalizeText(value) {
   return String(value || "")
     .trim()
     .toLowerCase();
+}
+
+function decodeHtmlEntities(value = "") {
+  return Object.entries(HTML_ENTITY_MAP).reduce(
+    (text, [entity, replacement]) => text.split(entity).join(replacement),
+    String(value)
+  );
+}
+
+function cleanVisibleText(value = "") {
+  return decodeHtmlEntities(String(value).replace(/<[^>]+>/g, " "))
+    .replace(/\s+/g, " ")
+    .replace(/\s+([,.;:!?])/g, "$1")
+    .trim();
+}
+
+function cleanParagraphText(value = "") {
+  return decodeHtmlEntities(String(value))
+    .split(/\n\s*\n/)
+    .map((paragraph) => cleanVisibleText(paragraph))
+    .filter(Boolean)
+    .join("\n\n");
+}
+
+function normalizeImportedTitle(title = "") {
+  return cleanVisibleText(title)
+    .replace(/"([^"]+)"/g, "$1")
+    .replace(/\bA\.I\.\b/g, "AI")
+    .replace(/Short-Story\/Film/g, "Short Story Film")
+    .replace(/\s+-\s+/g, ": ");
+}
+
+function normalizeSourceLabel(event) {
+  const organizer = cleanVisibleText(event.organizer);
+
+  if (organizer === "City of White Plains") {
+    return "City of White Plains";
+  }
+
+  if (organizer === "White Plains Public Library") {
+    return "White Plains Public Library";
+  }
+
+  if (organizer === "White Plains Business Improvement District") {
+    return "White Plains BID";
+  }
+
+  if (organizer === "White Plains Performing Arts Center") {
+    return "White Plains Performing Arts Center";
+  }
+
+  return cleanVisibleText(event.sourceLabel) || organizer || "Original source";
+}
+
+function normalizeCtaLabel(event) {
+  const label = cleanVisibleText(event.ctaLabel);
+  const organizer = cleanVisibleText(event.organizer);
+
+  if (/ticket/i.test(label) || /register/i.test(label) || /materials/i.test(label) || /map/i.test(label)) {
+    return label;
+  }
+
+  if (/flyer/i.test(label)) {
+    return "Open flyer";
+  }
+
+  if (/show page/i.test(label)) {
+    return "Show details";
+  }
+
+  if (/open .*page/i.test(label) || /^learn more$/i.test(label) || !label) {
+    if (organizer === "City of White Plains") {
+      return "City details";
+    }
+
+    if (organizer === "White Plains Public Library") {
+      return "Library details";
+    }
+
+    if (organizer === "White Plains Business Improvement District") {
+      return "Event details";
+    }
+
+    if (organizer === "White Plains Performing Arts Center") {
+      return "Show details";
+    }
+
+    return "Get details";
+  }
+
+  return label;
+}
+
+function buildGenericCitySummary(event) {
+  const title = normalizeImportedTitle(event.title);
+  const location = cleanVisibleText(event.locationName);
+
+  if (/meeting|board|commission|council|hearing|agency|corporation|review/i.test(title)) {
+    if (location && location.toLowerCase() !== "white plains") {
+      return `Public meeting at ${location}. Check the city page for the agenda and current details.`;
+    }
+
+    return "Public city meeting in White Plains. Check the city page for the agenda and current details.";
+  }
+
+  if (location && location.toLowerCase() !== "white plains") {
+    return `${title} at ${location}. Check the city page for current details.`;
+  }
+
+  return `${title} in White Plains. Check the city page for current details.`;
+}
+
+function normalizeShortSummary(event) {
+  const cleaned = cleanVisibleText(event.shortSummary);
+
+  if (!cleaned) {
+    return buildGenericCitySummary(event);
+  }
+
+  if (/is listed on the official White Plains city calendar\.?$/i.test(cleaned)) {
+    return buildGenericCitySummary(event);
+  }
+
+  return cleaned;
+}
+
+function normalizeFullDescription(event) {
+  const cleaned = cleanParagraphText(event.fullDescription);
+  const title = normalizeImportedTitle(event.title);
+  const location = cleanVisibleText(event.locationName);
+
+  if (/is listed on the official White Plains city calendar/i.test(cleaned)) {
+    if (/meeting|board|commission|council|hearing|agency|corporation|review/i.test(title)) {
+      if (location && location.toLowerCase() !== "white plains") {
+        return `${title} is on the City of White Plains calendar for ${location}.\n\nCheck the city page for the agenda, any location updates, and last-minute changes.`;
+      }
+
+      return `${title} is on the City of White Plains calendar.\n\nCheck the city page for the agenda, any location updates, and last-minute changes.`;
+    }
+
+    if (location && location.toLowerCase() !== "white plains") {
+      return `${title} is on the City of White Plains calendar for ${location}.\n\nCheck the city page for current details, updates, and any schedule changes.`;
+    }
+
+    return `${title} is on the City of White Plains calendar.\n\nCheck the city page for current details, updates, and any schedule changes.`;
+  }
+
+  return cleaned;
+}
+
+function normalizeEventCopy(event) {
+  return {
+    ...event,
+    title: normalizeImportedTitle(event.title),
+    shortSummary: normalizeShortSummary(event),
+    fullDescription: normalizeFullDescription(event),
+    category: cleanVisibleText(event.category),
+    organizer: cleanVisibleText(event.organizer),
+    locationName: cleanVisibleText(event.locationName),
+    locationAddress: cleanVisibleText(event.locationAddress),
+    sourceLabel: normalizeSourceLabel(event),
+    ctaLabel: normalizeCtaLabel(event),
+    tags: (event.tags || []).map((tag) => cleanVisibleText(tag)).filter(Boolean)
+  };
 }
 
 function eventKeys(event) {
@@ -330,7 +510,8 @@ function buildRelatedPreview(event) {
 const todayIso = getTodayIso();
 const mergedEvents = mergeEvents(autoEvents, manualEvents);
 
-const all = mergedEvents.map((event) => {
+const all = mergedEvents.map((rawEvent) => {
+  const event = normalizeEventCopy(rawEvent);
   const hasIllustration = Boolean(event.image && event.image.startsWith("/assets/img/events/"));
 
   return {

@@ -41,7 +41,7 @@
             {{ event.primaryAction.label }}
           </a>
         {% endif %}
-        <a class="text-link" href="{{ event.detailUrl | withPrefix }}">See details</a>
+        <a class="text-link" href="{{ event.detailUrl | withPrefix }}">Event details</a>
       </div>
     </div>
   </article>
@@ -56,14 +56,21 @@
   </article>
 {% endmacro %}
 
-{% macro neighborhoodCard(neighborhood) %}
-  <article class="neighborhood-card">
-    <div class="neighborhood-card__media">
-      <img src="{{ neighborhood.image | withPrefix }}" alt="{{ neighborhood.imageAlt }}" loading="lazy">
-    </div>
-    <div class="neighborhood-card__body">
-      <h3>{{ neighborhood.name }}</h3>
-      <p>{{ neighborhood.summary }}</p>
-    </div>
+{% macro neighborhoodCard(neighborhood, compact=true) %}
+  <article class="neighborhood-card{% if compact %} neighborhood-card--compact{% endif %}">
+    <a class="neighborhood-card__link" href="{{ neighborhood.detailUrl | withPrefix }}">
+      <div class="neighborhood-card__masthead">
+        <p class="neighborhood-card__group">{{ neighborhood.group }}</p>
+        <span class="neighborhood-card__initials" aria-hidden="true">{{ neighborhood.initials }}</span>
+      </div>
+      <div class="neighborhood-card__body">
+        <h3>{{ neighborhood.name }}</h3>
+        {% if neighborhood.cardContext %}
+          <p class="neighborhood-card__context">{{ neighborhood.cardContext }}</p>
+        {% endif %}
+        <p{% if compact %} class="neighborhood-card__summary"{% endif %}>{{ neighborhood.teaser }}</p>
+        <span class="text-link neighborhood-card__cta">See neighborhood</span>
+      </div>
+    </a>
   </article>
 {% endmacro %}

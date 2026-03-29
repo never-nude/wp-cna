@@ -1,40 +1,45 @@
-const sitePathPrefix = process.env.SITE_PATH_PREFIX || "/";
-const deployBaseUrl = process.env.SITE_BASE_URL || "http://localhost:8080";
-const cleanPrefix = sitePathPrefix === "/" ? "" : sitePathPrefix.replace(/\/$/, "");
+const runtimePathPrefix = process.env.SITE_PATH_PREFIX || "/";
+const canonicalPathPrefix = process.env.CANONICAL_PATH_PREFIX || process.env.SITE_PATH_PREFIX || "/wpcna";
+const deployBaseUrl = process.env.SITE_BASE_URL || "https://never-nude.github.io";
+const cleanCanonicalPrefix = canonicalPathPrefix === "/" ? "" : canonicalPathPrefix.replace(/\/$/, "");
 
 module.exports = {
   name: "White Plains Council of Neighborhood Associations",
   shortName: "WPCNA",
-  tagline: "Events and neighborhood updates around White Plains.",
-  baseUrl: `${deployBaseUrl.replace(/\/$/, "")}${cleanPrefix}`,
-  pathPrefix: sitePathPrefix,
+  tagline: "White Plains civic and neighborhood guide.",
+  baseUrl: `${deployBaseUrl.replace(/\/$/, "")}${cleanCanonicalPrefix}`,
+  pathPrefix: runtimePathPrefix,
+  themeColor: "#1F3A5F",
   contactName: "Michael Dalton, President",
-  email: "michael@mdalton.com",
-  location: "White Plains, New York, United States",
+  email: "info@wpcna.org",
+  location: "White Plains, New York",
   currentSiteUrl: "https://wp-cna.org/",
   defaultOgImage: "/assets/img/photos/white-plains-main.jpeg",
   heroImage: "/assets/img/photos/white-plains-main.jpeg",
   heroImageAlt: "Aerial view of downtown White Plains with high-rise buildings, surrounding neighborhoods, and wooded hills beyond the skyline.",
-  heroImageLabel: "White Plains from above",
-  heroImageSummary: "Downtown at the center, with White Plains neighborhoods rising behind it.",
   aboutImage: "/assets/img/photos/white-plains-main.jpeg",
   aboutImageAlt: "Aerial view of downtown White Plains with nearby neighborhoods and hills in the background.",
   mission:
-    "We're a group of neighborhood associations working together to help people stay informed and connected across White Plains.",
+    "WPCNA helps keep neighborhood concerns, local events, and civic information easier to follow across White Plains.",
+  purpose:
+    "White Plains has City Hall meetings, downtown events, library programs, neighborhood association materials, and public notices all moving at once. This site pulls the most useful pieces together with a neighborhood lens.",
+  useItFor:
+    "Use it to see what is coming up, get a clearer feel for different parts of the city, and find the White Plains pages residents end up needing again and again.",
   meetingNote:
-    "WPCNA usually meets on the second Tuesday of the month at 7:00 p.m. We share agenda details when they're ready.",
+    "WPCNA usually meets on the second Tuesday of the month at 7:00 p.m. Agendas and timing can change, so it is worth checking before you go.",
   communityChannels: [
     {
-      label: "White Plains BID on Instagram",
+      label: "White Plains BID Instagram",
       url: "https://www.instagram.com/whiteplains.bid/"
     },
     {
-      label: "Library event calendar",
+      label: "White Plains Public Library calendar",
       url: "https://calendar.whiteplainslibrary.org/"
     },
     {
-      label: "City calendar",
+      label: "City of White Plains calendar",
       url: "https://www.cityofwhiteplains.com/Calendar.aspx"
     }
-  ]
+  ],
+  footerNote: "Neighborhood-centered civic guide for White Plains."
 };

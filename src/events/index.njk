@@ -1,7 +1,7 @@
 ---
 layout: layouts/base.njk
 title: Events
-metaDescription: See what's coming up in White Plains and look back at past events.
+metaDescription: A selective calendar of events, meetings, and public life around White Plains.
 pageClass: page-events
 ---
 {% from "components/macros.njk" import eventCard %}
@@ -10,7 +10,7 @@ pageClass: page-events
   <div class="container page-hero__content">
     <p class="eyebrow">Events</p>
     <h1>Events in White Plains</h1>
-    <p>What's coming up is first. Older events are below if you want to look back.</p>
+    <p>A selective White Plains calendar, with upcoming events first and older listings below if you need them.</p>
   </div>
 </section>
 
@@ -19,7 +19,7 @@ pageClass: page-events
     <form class="filter-bar" data-event-filters>
       <label>
         <span>Search</span>
-        <input type="search" name="search" placeholder="Search by event, place, or tag">
+        <input type="search" name="search" placeholder="Search by event, place, organizer, or tag">
       </label>
 
       <label>
@@ -52,6 +52,7 @@ pageClass: page-events
     <div>
       <p class="eyebrow">Coming Up</p>
       <h2>Here's what's coming up</h2>
+      <p>This calendar is meant to stay readable. It pulls together the events most likely to matter to White Plains residents, rather than mirroring every source in full.</p>
     </div>
     <p class="section__count" data-event-count>{{ eventStore.upcoming.length }} events</p>
   </div>
@@ -71,7 +72,7 @@ pageClass: page-events
 
   <div class="container empty-state empty-state--inline" hidden data-filter-empty>
     <h3>Nothing matches that search.</h3>
-    <p>Try a different word, month, or category.</p>
+    <p>Try a different word, month, category, or organizer.</p>
   </div>
 </section>
 
@@ -81,13 +82,13 @@ pageClass: page-events
       <summary>
         <span>
           <span class="eyebrow">Past Events</span>
-          <strong>Look back at past events</strong>
+          <strong>Past events</strong>
         </span>
         <span class="archive-panel__count">{{ eventStore.past.length }} events</span>
       </summary>
 
       <div class="archive-panel__content" data-event-section>
-        <p class="archive-panel__intro">Older events stay here if you want them, but they don't get in the way of what's next.</p>
+        <p class="archive-panel__intro">Older listings stay here for reference without crowding out what is coming up next.</p>
         <div class="card-grid card-grid--past">
           {% for event in eventStore.past %}
             {{ eventCard(event) }}

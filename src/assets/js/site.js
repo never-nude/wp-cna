@@ -80,3 +80,53 @@ if (filterForm) {
     window.requestAnimationFrame(applyFilters);
   });
 }
+
+const carousels = Array.from(document.querySelectorAll("[data-carousel]"));
+
+carousels.forEach((carousel) => {
+  const track = carousel.querySelector("[data-carousel-track]");
+  const prev = carousel.querySelector("[data-carousel-prev]");
+  const next = carousel.querySelector("[data-carousel-next]");
+
+  if (!track || !prev || !next) {
+    return;
+  }
+
+  const getStep = () => {
+    const firstCard = track.firstElementChild;
+    const styles = window.getComputedStyle(track);
+    const gap = Number.parseFloat(styles.columnGap || styles.gap || "0");
+
+    if (!firstCard) {
+      return track.clientWidth * 0.9;
+    }
+
+    return firstCard.getBoundingClientRect().width + gap;
+  };
+
+  const updateControls = () => {
+    const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth - 2);
+
+    prev.disabled = track.scrollLeft <= 2;
+    next.disabled = track.scrollLeft >= maxScroll;
+  };
+
+  prev.addEventListener("click", () => {
+    track.scrollBy({ left: -getStep(), behavior: "smooth" });
+  });
+
+  next.addEventListener("click", () => {
+    track.scrollBy({ left: getStep(), behavior: "smooth" });
+  });
+
+  track.addEventListener(
+    "scroll",
+    () => {
+      window.requestAnimationFrame(updateControls);
+    },
+    { passive: true }
+  );
+
+  window.addEventListener("resize", updateControls);
+  updateControls();
+});

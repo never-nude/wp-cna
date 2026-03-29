@@ -32,18 +32,18 @@ eleventyComputed:
       <div class="detail-copy">
         <div class="detail-copy__meta">
           <span class="tag">{{ event.category }}</span>
-          <span>From {{ event.organizer }}</span>
+          <span>Listed by {{ event.organizer }}</span>
           {% if event.status == "past" %}
             <span class="event-card__status">Past event</span>
           {% endif %}
         </div>
 
-        <h2>What to know</h2>
+        <h2>About this event</h2>
         {{ event.fullDescription | paragraphs | safe }}
 
         {% if event.secondaryLinks.length %}
           <div class="detail-links">
-            <h3>More info</h3>
+            <h3>More links</h3>
             <ul class="footer-list">
               {% for link in event.secondaryLinks %}
                 <li><a href="{{ link.url }}" target="_blank" rel="noreferrer">{{ link.label }}</a></li>
@@ -56,7 +56,7 @@ eleventyComputed:
 
     <aside class="detail-sidebar">
       <div class="detail-card">
-        <p class="eyebrow">Event Details</p>
+        <p class="eyebrow">At a Glance</p>
         <dl class="detail-list">
           <div>
             <dt>Status</dt>
@@ -71,7 +71,7 @@ eleventyComputed:
             <dd>{{ event | timeLabel }}</dd>
           </div>
           <div>
-            <dt>Place</dt>
+            <dt>Location</dt>
             <dd>{{ event.locationName }}</dd>
           </div>
           <div>
@@ -79,7 +79,7 @@ eleventyComputed:
             <dd>{{ event.locationAddress }}</dd>
           </div>
           <div>
-            <dt>Source page</dt>
+            <dt>Listed by</dt>
             <dd>{{ event.sourceLabel }}</dd>
           </div>
         </dl>
@@ -100,7 +100,7 @@ eleventyComputed:
     <div class="container section__intro">
       <div>
         <p class="eyebrow">More Events</p>
-        <h2>More to check out</h2>
+        <h2>More around White Plains</h2>
       </div>
     </div>
     <div class="container card-grid">

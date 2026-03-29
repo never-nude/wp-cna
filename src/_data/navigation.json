@@ -8,6 +8,10 @@
     "url": "/events/"
   },
   {
+    "label": "Neighborhoods",
+    "url": "/neighborhoods/"
+  },
+  {
     "label": "About",
     "url": "/about/"
   }

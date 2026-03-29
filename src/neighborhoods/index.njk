@@ -1,0 +1,43 @@
+---
+layout: layouts/base.njk
+title: White Plains Neighborhoods
+metaDescription: A neighborhood-by-neighborhood guide to White Plains, with local context across the city.
+pageClass: page-neighborhoods
+---
+{% from "components/macros.njk" import neighborhoodCard %}
+
+<section class="page-hero page-hero--compact">
+  <div class="container page-hero__content">
+    <p class="eyebrow">Neighborhood Guide</p>
+    <h1>White Plains neighborhoods</h1>
+    <p>From Downtown and Church Street to Gedney, Battle Hill, Rosedale, and Saxon Woods, browse White Plains one neighborhood at a time.</p>
+  </div>
+</section>
+
+<section class="section section--flush-top">
+  <div class="container section__intro">
+    <div>
+      <p class="eyebrow">Citywide Guide</p>
+      <h2>All neighborhoods</h2>
+      <p>Use this guide to get your bearings quickly, compare one part of White Plains to another, and see how each area fits into the city as a whole.</p>
+    </div>
+    <p class="section__count">{{ neighborhoodStore.count }} neighborhoods</p>
+  </div>
+
+  <div class="container neighborhood-sections">
+    {% for group in neighborhoodStore.groups %}
+      <section class="neighborhood-group" id="{{ group.slug }}">
+        <div class="neighborhood-group__intro">
+          <p class="eyebrow">{% if loop.index < 10 %}0{% endif %}{{ loop.index }}</p>
+          <h2>{{ group.name }}</h2>
+          <p>{{ group.description }}</p>
+        </div>
+        <div class="neighborhood-grid neighborhood-grid--directory">
+          {% for neighborhood in group.neighborhoods %}
+            {{ neighborhoodCard(neighborhood) }}
+          {% endfor %}
+        </div>
+      </section>
+    {% endfor %}
+  </div>
+</section>
