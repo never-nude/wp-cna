@@ -1,4 +1,110 @@
-const events = require("./events.json");
+const manualEvents = require("./events.json");
+
+let autoEvents = [];
+
+try {
+  autoEvents = require("./events.auto.json");
+} catch (error) {
+  if (error.code !== "MODULE_NOT_FOUND") {
+    throw error;
+  }
+}
+
+const TIME_ZONE = "America/New_York";
+
+function getTodayIso() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  })
+    .format(new Date())
+    .replaceAll("/", "-");
+}
+
+function normalizeUrl(url) {
+  if (!url) {
+    return null;
+  }
+
+  try {
+    const normalized = new URL(url);
+    normalized.pathname = normalized.pathname.replace(/\/{2,}/g, "/");
+    return normalized.toString().replace(/\/$/, "");
+  } catch {
+    return null;
+  }
+}
+
+function normalizeText(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase();
+}
+
+function eventKeys(event) {
+  const keys = [];
+
+  if (event.id) {
+    keys.push(`id:${event.id}`);
+  }
+
+  if (event.slug) {
+    keys.push(`slug:${event.slug}`);
+  }
+
+  for (const url of [event.externalUrl, event.sourceUrl]) {
+    const normalizedUrl = normalizeUrl(url);
+    if (normalizedUrl) {
+      keys.push(`url:${normalizedUrl}`);
+    }
+  }
+
+  if (event.title && event.startDate) {
+    keys.push(`title:${normalizeText(event.title)}|${event.startDate}|${normalizeText(event.locationName)}`);
+  }
+
+  return [...new Set(keys)];
+}
+
+function mergeEvents(autoItems, manualItems) {
+  const merged = [];
+  const keyToIndex = new Map();
+
+  function upsert(event, priority) {
+    const keys = eventKeys(event);
+    const matchedKey = keys.find((key) => keyToIndex.has(key));
+
+    if (!matchedKey) {
+      const index = merged.push({ ...event, __priority: priority }) - 1;
+      keys.forEach((key) => keyToIndex.set(key, index));
+      return;
+    }
+
+    const index = keyToIndex.get(matchedKey);
+    if (priority < merged[index].__priority) {
+      return;
+    }
+
+    merged[index] = { ...event, __priority: priority };
+    keys.forEach((key) => keyToIndex.set(key, index));
+  }
+
+  autoItems.forEach((event) => upsert(event, 0));
+  manualItems.forEach((event) => upsert(event, 1));
+
+  return merged.map(({ __priority, ...event }) => event);
+}
+
+function deriveStatus(event, todayIso) {
+  if (!event.startDate) {
+    return event.status || "upcoming";
+  }
+
+  const endDate = event.endDate || event.startDate;
+  return endDate < todayIso ? "past" : "upcoming";
+}
 
 function scoreRelated(baseEvent, candidate) {
   let score = 0;
@@ -67,11 +173,37 @@ function comparePast(a, b) {
   return `${b.startDate}${b.startTime || "00:00"}`.localeCompare(`${a.startDate}${a.startTime || "00:00"}`);
 }
 
-const all = events.map((event) => {
+function buildRelatedPreview(event) {
+  return {
+    id: event.id,
+    slug: event.slug,
+    title: event.title,
+    category: event.category,
+    shortSummary: event.shortSummary,
+    startDate: event.startDate,
+    endDate: event.endDate,
+    startTime: event.startTime,
+    endTime: event.endTime,
+    locationName: event.locationName,
+    organizer: event.organizer,
+    status: event.status,
+    monthKey: event.monthKey,
+    displayImage: event.displayImage,
+    searchText: event.searchText,
+    detailUrl: event.detailUrl,
+    primaryAction: event.primaryAction
+  };
+}
+
+const todayIso = getTodayIso();
+const mergedEvents = mergeEvents(autoEvents, manualEvents);
+
+const all = mergedEvents.map((event) => {
   const hasIllustration = Boolean(event.image && event.image.startsWith("/assets/img/events/"));
 
   return {
     ...event,
+    status: deriveStatus(event, todayIso),
     detailUrl: `/events/${event.slug}/`,
     primaryAction: buildPrimaryAction(event),
     secondaryLinks: buildSecondaryLinks(event),
@@ -113,7 +245,7 @@ for (const event of all) {
       return compareUpcoming(a.candidate, b.candidate);
     })
     .slice(0, 3)
-    .map((entry) => entry.candidate);
+    .map((entry) => buildRelatedPreview(entry.candidate));
 }
 
 const categories = [...new Set(all.map((event) => event.category))].sort();

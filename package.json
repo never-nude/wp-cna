@@ -6,10 +6,13 @@
   "scripts": {
     "start": "eleventy --serve",
     "build": "eleventy",
-    "clean": "rm -rf _site"
+    "clean": "rm -rf _site",
+    "update-events": "node ./scripts/update-events.mjs"
   },
   "devDependencies": {
     "@11ty/eleventy": "3.1.5"
+  },
+  "dependencies": {
+    "cheerio": "^1.2.0"
   }
 }
-
