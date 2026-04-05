@@ -1,29 +1,18 @@
 <header class="site-header" data-site-header>
-  <div class="container site-header__inner">
-    <a class="brand" href="{{ '/' | withPrefix }}">
-      <span class="brand__mark" aria-hidden="true">WP</span>
-      <span class="brand__text">
-        <span class="brand__name">{{ site.shortName }}</span>
-        <span class="brand__sub">{{ site.tagline }}</span>
-      </span>
+  <div class="header-inner">
+    <a class="site-brand" href="{{ '/' | withPrefix }}">
+      <span class="brand-mark" aria-hidden="true">WP</span>
+      <span class="brand-name">{{ site.shortName }}</span>
     </a>
-
-    <button
-      class="nav-toggle"
-      type="button"
-      aria-expanded="false"
-      aria-controls="site-nav"
-      data-nav-toggle
-    >
-      <span class="nav-toggle__label">Menu</span>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
-
     <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-nav-menu>
-      <ul class="site-nav__list">
+      <ul class="nav-list">
         {% for item in navigation %}
           {% set isCurrent = page.url == item.url or (item.url != "/" and page.url.startsWith(item.url)) %}
           <li>
-            <a href="{{ item.url | withPrefix }}" {% if isCurrent %}aria-current="page"{% endif %}>{{ item.label }}</a>
+            <a href="{{ item.url | withPrefix }}"{% if isCurrent %} aria-current="page"{% endif %}>{{ item.label }}</a>
           </li>
         {% endfor %}
       </ul>

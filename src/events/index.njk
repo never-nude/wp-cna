@@ -2,26 +2,24 @@
 layout: layouts/base.njk
 title: Events
 metaDescription: A selective calendar of events, meetings, and public life around White Plains.
-pageClass: page-events
 ---
 {% from "components/macros.njk" import eventCard %}
 
-<section class="page-hero page-hero--compact">
-  <div class="container page-hero__content">
+<section class="page-hero">
+  <div class="wrap">
     <p class="eyebrow">Events</p>
     <h1>Events in White Plains</h1>
-    <p>A selective White Plains calendar, with upcoming events first and older listings below if you need them.</p>
+    <p>A curated calendar pulling together events from across the city, with upcoming events first.</p>
   </div>
 </section>
 
-<section class="section section--flush-top">
-  <div class="container">
+<section class="section-compact">
+  <div class="wrap">
     <form class="filter-bar" data-event-filters>
       <label>
         <span>Search</span>
-        <input type="search" name="search" placeholder="Search by event, place, organizer, or tag">
+        <input type="search" name="search" placeholder="Event, place, organizer, or tag">
       </label>
-
       <label>
         <span>Category</span>
         <select name="category">
@@ -31,7 +29,6 @@ pageClass: page-events
           {% endfor %}
         </select>
       </label>
-
       <label>
         <span>Month</span>
         <select name="month">
@@ -41,62 +38,61 @@ pageClass: page-events
           {% endfor %}
         </select>
       </label>
-
-      <button class="button button--ghost" type="reset">Clear filters</button>
+      <button class="btn btn-outline" type="reset">Clear</button>
     </form>
   </div>
 </section>
 
-<section class="section section--flush-top" data-event-section>
-  <div class="container section__intro">
-    <div>
-      <p class="eyebrow">Coming Up</p>
-      <h2>Here's what's coming up</h2>
-      <p>This calendar is meant to stay readable. It pulls together the events most likely to matter to White Plains residents, rather than mirroring every source in full.</p>
+<section class="section" data-event-section>
+  <div class="wrap">
+    <div class="section-header">
+      <div>
+        <h2>Upcoming</h2>
+        <p>Events most likely to matter to White Plains residents.</p>
+      </div>
+      <span class="archive-count" data-event-count>{{ eventStore.upcoming.length }} events</span>
     </div>
-    <p class="section__count" data-event-count>{{ eventStore.upcoming.length }} events</p>
-  </div>
 
-  {% if eventStore.upcoming.length %}
-    <div class="container card-grid">
-      {% for event in eventStore.upcoming %}
-        {{ eventCard(event) }}
-      {% endfor %}
-    </div>
-  {% else %}
-    <div class="container empty-state">
-      <h3>Nothing is on the calendar right now.</h3>
-      <p>Check back soon for the next White Plains event.</p>
-    </div>
-  {% endif %}
+    {% if eventStore.upcoming.length %}
+      <div class="card-grid">
+        {% for event in eventStore.upcoming %}
+          {{ eventCard(event) }}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <h3>Nothing on the calendar right now.</h3>
+        <p>Check back soon.</p>
+      </div>
+    {% endif %}
 
-  <div class="container empty-state empty-state--inline" hidden data-filter-empty>
-    <h3>Nothing matches that search.</h3>
-    <p>Try a different word, month, category, or organizer.</p>
+    <div class="empty-state empty-inline" hidden data-filter-empty>
+      <h3>No events match that search.</h3>
+      <p>Try a different term or clear the filters.</p>
+    </div>
   </div>
 </section>
 
-<section class="section section--tint">
-  <div class="container">
+<section class="section section-alt">
+  <div class="wrap">
     <details class="archive-panel"{% if not eventStore.upcoming.length %} open{% endif %}>
       <summary>
         <span>
-          <span class="eyebrow">Past Events</span>
+          <span class="eyebrow">Archive</span>
           <strong>Past events</strong>
         </span>
-        <span class="archive-panel__count">{{ eventStore.past.length }} events</span>
+        <span class="archive-count">{{ eventStore.past.length }} events</span>
       </summary>
-
-      <div class="archive-panel__content" data-event-section>
-        <p class="archive-panel__intro">Older listings stay here for reference without crowding out what is coming up next.</p>
-        <div class="card-grid card-grid--past">
+      <div data-event-section>
+        <p class="archive-intro">Older listings kept here for reference.</p>
+        <div class="card-grid">
           {% for event in eventStore.past %}
             {{ eventCard(event) }}
           {% endfor %}
         </div>
-        <div class="empty-state empty-state--inline" hidden data-filter-empty>
-          <h3>Nothing in the archive matches that.</h3>
-          <p>Try a broader search or clear the filters.</p>
+        <div class="empty-state empty-inline" hidden data-filter-empty>
+          <h3>No past events match that.</h3>
+          <p>Try a broader search or clear filters.</p>
         </div>
       </div>
     </details>

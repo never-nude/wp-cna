@@ -2,81 +2,74 @@
 layout: layouts/base.njk
 title: What's Happening in White Plains
 metaDescription: A neighborhood-centered guide to events, civic life, and useful local information around White Plains.
-pageClass: page-home
 ---
 {% from "components/macros.njk" import eventCard, neighborhoodCard, resourceCard %}
 
-<section class="hero hero--home">
-  <div class="container hero__stack">
-    <figure class="hero__frame">
-      <img src="{{ site.heroImage | withPrefix }}" alt="{{ site.heroImageAlt }}" loading="eager">
-      <div class="hero__overlay">
-        <div class="hero__content">
-          <p class="eyebrow">White Plains Council of Neighborhood Associations</p>
-          <h1>What's happening in White Plains</h1>
-          <p class="hero__lede">A White Plains guide to local events, neighborhoods, and civic life.</p>
-          <div class="hero__actions">
-            <a class="button button--large" href="{{ '/events/' | withPrefix }}">View events</a>
-            <a class="button button--ghost button--large" href="{{ '/about/' | withPrefix }}">About WPCNA</a>
-          </div>
-        </div>
+<section class="hero">
+  <img src="{{ site.heroImage | withPrefix }}" alt="{{ site.heroImageAlt }}" loading="eager">
+  <div class="hero-overlay">
+    <div class="wrap">
+      <p class="eyebrow">White Plains, New York</p>
+      <h1>What's happening in White Plains</h1>
+      <p>Events, neighborhoods, and civic life in the county seat of Westchester.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="{{ '/events/' | withPrefix }}">View events</a>
+        <a class="btn btn-outline" href="{{ '/neighborhoods/' | withPrefix }}">Neighborhoods</a>
       </div>
-    </figure>
-    <ul class="hero__stats" aria-label="Site highlights">
-      <li><span>Coming up</span><strong>{{ eventStore.upcoming.length }}</strong></li>
-      <li><span>Neighborhoods</span><strong>{{ neighborhoodStore.count }}</strong></li>
-      <li><span>Civic guide</span><strong>Events, neighborhoods, key links</strong></li>
-    </ul>
+      <ul class="hero-stats">
+        <li><span>Upcoming</span><strong>{{ eventStore.upcoming.length }} events</strong></li>
+        <li><span>Neighborhoods</span><strong>{{ neighborhoodStore.count }}</strong></li>
+        <li><span>Sources</span><strong>City, Library, BID, WPPAC</strong></li>
+      </ul>
+    </div>
   </div>
 </section>
 
-<section class="section section--flush-top">
-  <div class="container section__intro">
-    <div>
-      <p class="eyebrow">Coming Up</p>
-      <h2>Upcoming events around White Plains</h2>
-      <p>This is a shorter White Plains calendar, not a mirror of every feed. We focus on the public meetings, arts events, downtown happenings, and neighborhood-relevant programs residents are most likely to want on their radar.</p>
+<section class="section">
+  <div class="wrap">
+    <div class="section-header">
+      <div>
+        <p class="eyebrow">Coming Up</p>
+        <h2>Upcoming events</h2>
+        <p>A curated selection of public meetings, arts events, downtown happenings, and neighborhood programs.</p>
+      </div>
+      <a class="link-arrow" href="{{ '/events/' | withPrefix }}">All events</a>
     </div>
-    <a class="text-link" href="{{ '/events/' | withPrefix }}">See all events</a>
-  </div>
 
-  {% if eventStore.homeUpcoming.length %}
-    <div class="container card-grid card-grid--featured">
-      {% for event in eventStore.homeUpcoming %}
-        {{ eventCard(event, true) }}
-      {% endfor %}
-    </div>
-  {% else %}
-    <div class="container empty-state">
-      <h3>Nothing is posted right now.</h3>
-      <p>Check back soon, look through past events, or email WPCNA if you are trying to track something specific.</p>
-      <a class="button" href="{{ '/events/' | withPrefix }}">Browse events</a>
-    </div>
-  {% endif %}
+    {% if eventStore.homeUpcoming.length %}
+      <div class="card-grid">
+        {% for event in eventStore.homeUpcoming %}
+          {{ eventCard(event, true) }}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <h3>No upcoming events right now.</h3>
+        <p>Check back soon or browse past events.</p>
+        <a class="btn btn-primary" href="{{ '/events/' | withPrefix }}">Browse events</a>
+      </div>
+    {% endif %}
+  </div>
 </section>
 
-<section class="section section--tint">
-  <div class="container section__intro">
-    <div>
-      <p class="eyebrow">Neighborhoods</p>
-      <h2>Browse White Plains by neighborhood</h2>
-      <p>From Downtown and Church Street to Gedney, Battle Hill, Rosedale, and Saxon Woods, this guide helps you read White Plains as neighborhoods, not just one blur on a map.</p>
+<section class="section section-alt">
+  <div class="wrap">
+    <div class="section-header">
+      <div>
+        <p class="eyebrow">Neighborhoods</p>
+        <h2>Explore White Plains</h2>
+        <p>{{ neighborhoodStore.count }} neighborhoods from Downtown to Saxon Woods.</p>
+      </div>
+      <a class="link-arrow" href="{{ '/neighborhoods/' | withPrefix }}">All neighborhoods</a>
     </div>
-    <a class="text-link" href="{{ '/neighborhoods/' | withPrefix }}">See all neighborhoods</a>
-  </div>
-  <div class="container carousel" data-carousel>
-    <div class="carousel__header">
-      <p class="section__count">{{ neighborhoodStore.count }} neighborhoods</p>
-      <div class="carousel__controls">
-        <button class="carousel__control" type="button" data-carousel-prev aria-label="Scroll neighborhoods backward">
-          Previous
-        </button>
-        <button class="carousel__control" type="button" data-carousel-next aria-label="Scroll neighborhoods forward">
-          Next
-        </button>
+    <div class="carousel-header">
+      <span class="archive-count">{{ neighborhoodStore.count }} neighborhoods</span>
+      <div class="carousel-controls">
+        <button class="carousel-btn" type="button" data-carousel-prev aria-label="Previous">&larr;</button>
+        <button class="carousel-btn" type="button" data-carousel-next aria-label="Next">&rarr;</button>
       </div>
     </div>
-    <div class="carousel__viewport" data-carousel-track>
+    <div class="carousel-track" data-carousel-track>
       {% for neighborhood in neighborhoodStore.all %}
         {{ neighborhoodCard(neighborhood) }}
       {% endfor %}
@@ -85,33 +78,38 @@ pageClass: page-home
 </section>
 
 <section class="section">
-  <div class="container section__intro">
-    <div>
-      <p class="eyebrow">Useful Links</p>
-      <h2>Useful White Plains pages</h2>
-      <p>A few White Plains pages residents end up using again and again.</p>
+  <div class="wrap">
+    <div class="section-header">
+      <div>
+        <p class="eyebrow">Quick Links</p>
+        <h2>Useful pages</h2>
+        <p>Pages residents tend to use again and again.</p>
+      </div>
     </div>
-  </div>
-  <div class="container resource-grid">
-    {% for resource in resources %}
-      {{ resourceCard(resource) }}
-    {% endfor %}
+    <div class="card-grid card-grid-2">
+      {% for resource in resources %}
+        {{ resourceCard(resource) }}
+      {% endfor %}
+    </div>
   </div>
 </section>
 
-<section class="section">
-  <div class="container spotlight">
-    <div>
-      <p class="eyebrow">About WPCNA</p>
-      <h2>Why this site exists</h2>
-      <p>{{ site.purpose }}</p>
-      <p>WPCNA keeps a neighborhood perspective in the civic conversation. This site gives residents a clear place to start.</p>
-    </div>
-    <div class="spotlight__card">
-      <p class="eyebrow">Contact</p>
-      <h3>{{ site.contactName }}</h3>
-      <p>{{ site.location }}</p>
-      <a class="button button--ghost" href="mailto:{{ site.email }}">Get in touch</a>
+<section class="section section-alt">
+  <div class="wrap">
+    <div class="spotlight">
+      <div>
+        <p class="eyebrow">About</p>
+        <h2>Neighborhood voices, citywide view</h2>
+        <p>{{ site.purpose }}</p>
+        <p style="margin-top:1rem"><a class="btn btn-primary" href="{{ '/about/' | withPrefix }}">About WPCNA</a></p>
+      </div>
+      <div class="spotlight-card">
+        <p class="eyebrow">Contact</p>
+        <h3>{{ site.contactName }}</h3>
+        <p>{{ site.location }}</p>
+        <p>{{ site.meetingNote }}</p>
+        <a class="btn btn-outline" href="mailto:{{ site.email }}" style="margin-top:0.75rem">Get in touch</a>
+      </div>
     </div>
   </div>
 </section>

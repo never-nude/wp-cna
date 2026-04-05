@@ -1,132 +1,92 @@
+/* Mobile navigation */
 const navToggle = document.querySelector("[data-nav-toggle]");
 const navMenu = document.querySelector("[data-nav-menu]");
 
 if (navToggle && navMenu) {
-  const closeNav = () => {
+  const close = () => {
     navMenu.classList.remove("is-open");
     navToggle.setAttribute("aria-expanded", "false");
   };
 
   navToggle.addEventListener("click", () => {
-    const isOpen = navMenu.classList.toggle("is-open");
-    navToggle.setAttribute("aria-expanded", String(isOpen));
+    const open = navMenu.classList.toggle("is-open");
+    navToggle.setAttribute("aria-expanded", String(open));
   });
 
-  navMenu.addEventListener("click", (event) => {
-    if (event.target.closest("a")) {
-      closeNav();
-    }
+  navMenu.addEventListener("click", (e) => {
+    if (e.target.closest("a")) close();
   });
 
-  document.addEventListener("click", (event) => {
-    if (!navMenu.classList.contains("is-open")) {
-      return;
-    }
-
-    if (navMenu.contains(event.target) || navToggle.contains(event.target)) {
-      return;
-    }
-
-    closeNav();
+  document.addEventListener("click", (e) => {
+    if (!navMenu.classList.contains("is-open")) return;
+    if (navMenu.contains(e.target) || navToggle.contains(e.target)) return;
+    close();
   });
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && navMenu.classList.contains("is-open")) {
-      closeNav();
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && navMenu.classList.contains("is-open")) {
+      close();
       navToggle.focus();
     }
   });
 }
 
+/* Event filtering */
 const filterForm = document.querySelector("[data-event-filters]");
 
 if (filterForm) {
   const cards = Array.from(document.querySelectorAll("[data-event-card]"));
   const sections = Array.from(document.querySelectorAll("[data-event-section]"));
 
-  const applyFilters = () => {
-    const formData = new FormData(filterForm);
-    const search = String(formData.get("search") || "").trim().toLowerCase();
-    const category = String(formData.get("category") || "");
-    const month = String(formData.get("month") || "");
+  const apply = () => {
+    const fd = new FormData(filterForm);
+    const search = String(fd.get("search") || "").trim().toLowerCase();
+    const category = String(fd.get("category") || "");
+    const month = String(fd.get("month") || "");
 
     cards.forEach((card) => {
-      const matchesSearch = !search || card.dataset.search.includes(search);
-      const matchesCategory = !category || card.dataset.category === category;
-      const matchesMonth = !month || card.dataset.month === month;
-      const isVisible = matchesSearch && matchesCategory && matchesMonth;
-
-      card.hidden = !isVisible;
+      card.hidden = !(
+        (!search || card.dataset.search.includes(search)) &&
+        (!category || card.dataset.category === category) &&
+        (!month || card.dataset.month === month)
+      );
     });
 
-    sections.forEach((section) => {
-      const visibleCards = section.querySelectorAll("[data-event-card]:not([hidden])").length;
-      const countNode = section.querySelector("[data-event-count]");
-      const emptyNode = section.querySelector("[data-filter-empty]");
-
-      if (countNode) {
-        countNode.textContent = `${visibleCards} event${visibleCards === 1 ? "" : "s"}`;
-      }
-
-      if (emptyNode) {
-        emptyNode.hidden = visibleCards !== 0;
-      }
+    sections.forEach((sec) => {
+      const visible = sec.querySelectorAll("[data-event-card]:not([hidden])").length;
+      const count = sec.querySelector("[data-event-count]");
+      const empty = sec.querySelector("[data-filter-empty]");
+      if (count) count.textContent = `${visible} event${visible === 1 ? "" : "s"}`;
+      if (empty) empty.hidden = visible !== 0;
     });
   };
 
-  filterForm.addEventListener("input", applyFilters);
-  filterForm.addEventListener("change", applyFilters);
-  filterForm.addEventListener("reset", () => {
-    window.requestAnimationFrame(applyFilters);
-  });
+  filterForm.addEventListener("input", apply);
+  filterForm.addEventListener("change", apply);
+  filterForm.addEventListener("reset", () => requestAnimationFrame(apply));
 }
 
-const carousels = Array.from(document.querySelectorAll("[data-carousel]"));
+/* Carousel */
+const track = document.querySelector("[data-carousel-track]");
+const prev = document.querySelector("[data-carousel-prev]");
+const next = document.querySelector("[data-carousel-next]");
 
-carousels.forEach((carousel) => {
-  const track = carousel.querySelector("[data-carousel-track]");
-  const prev = carousel.querySelector("[data-carousel-prev]");
-  const next = carousel.querySelector("[data-carousel-next]");
-
-  if (!track || !prev || !next) {
-    return;
-  }
-
-  const getStep = () => {
-    const firstCard = track.firstElementChild;
-    const styles = window.getComputedStyle(track);
-    const gap = Number.parseFloat(styles.columnGap || styles.gap || "0");
-
-    if (!firstCard) {
-      return track.clientWidth * 0.9;
-    }
-
-    return firstCard.getBoundingClientRect().width + gap;
+if (track && prev && next) {
+  const step = () => {
+    const first = track.firstElementChild;
+    const gap = parseFloat(getComputedStyle(track).gap || "0");
+    return first ? first.getBoundingClientRect().width + gap : track.clientWidth * 0.9;
   };
 
-  const updateControls = () => {
-    const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth - 2);
-
+  const update = () => {
+    const max = Math.max(0, track.scrollWidth - track.clientWidth - 2);
     prev.disabled = track.scrollLeft <= 2;
-    next.disabled = track.scrollLeft >= maxScroll;
+    next.disabled = track.scrollLeft >= max;
   };
 
-  prev.addEventListener("click", () => {
-    track.scrollBy({ left: -getStep(), behavior: "smooth" });
-  });
-
-  next.addEventListener("click", () => {
-    track.scrollBy({ left: getStep(), behavior: "smooth" });
-  });
-
-  track.addEventListener(
-    "scroll",
-    () => {
-      window.requestAnimationFrame(updateControls);
-    },
-    { passive: true }
-  );
-
-  window.addEventListener("resize", updateControls);
-  updateControls();
-});
+  prev.addEventListener("click", () => track.scrollBy({ left: -step(), behavior: "smooth" }));
+  next.addEventListener("click", () => track.scrollBy({ left: step(), behavior: "smooth" }));
+  track.addEventListener("scroll", () => requestAnimationFrame(update), { passive: true });
+  window.addEventListener("resize", update);
+  update();
+}

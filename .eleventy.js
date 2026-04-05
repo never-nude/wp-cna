@@ -1,30 +1,11 @@
-const htmlEscapeMap = {
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;",
-  '"': "&quot;",
-  "'": "&#39;"
-};
-
-function escapeHtml(value = "") {
-  return String(value).replace(/[&<>"']/g, (character) => htmlEscapeMap[character]);
-}
-
 function asDate(dateString) {
-  if (!dateString) {
-    return null;
-  }
-
+  if (!dateString) return null;
   return new Date(`${dateString}T12:00:00`);
 }
 
 function formatDate(dateString, options = {}) {
   const date = asDate(dateString);
-
-  if (!date) {
-    return "";
-  }
-
+  if (!date) return "";
   return new Intl.DateTimeFormat("en-US", {
     weekday: options.includeWeekday ? "long" : undefined,
     month: "long",
@@ -35,11 +16,7 @@ function formatDate(dateString, options = {}) {
 
 function formatShortDate(dateString) {
   const date = asDate(dateString);
-
-  if (!date) {
-    return "";
-  }
-
+  if (!date) return "";
   return new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "numeric",
@@ -48,17 +25,22 @@ function formatShortDate(dateString) {
 }
 
 function formatTime(timeString) {
-  if (!timeString) {
-    return "See details";
-  }
-
+  if (!timeString) return "See details";
   const [hours, minutes] = timeString.split(":").map(Number);
   const date = new Date(2026, 0, 1, hours, minutes);
-
   return new Intl.DateTimeFormat("en-US", {
     hour: "numeric",
     minute: "2-digit"
   }).format(date);
+}
+
+function escapeHtml(value = "") {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 module.exports = function (eleventyConfig) {
@@ -67,83 +49,46 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
 
   eleventyConfig.addFilter("absoluteUrl", (path = "", base = "") => {
-    if (!path) {
-      return base;
-    }
-
-    if (path.startsWith("http://") || path.startsWith("https://")) {
-      return path;
-    }
-
+    if (!path) return base;
+    if (path.startsWith("http://") || path.startsWith("https://")) return path;
     return `${base.replace(/\/$/, "")}${path.startsWith("/") ? "" : "/"}${path}`;
   });
 
   eleventyConfig.addFilter("withPrefix", (path = "") => {
-    if (!path) {
-      return pathPrefix === "/" ? "/" : pathPrefix;
-    }
-
-    if (path.startsWith("http://") || path.startsWith("https://")) {
-      return path;
-    }
-
+    if (!path) return pathPrefix === "/" ? "/" : pathPrefix;
+    if (path.startsWith("http://") || path.startsWith("https://")) return path;
     const cleanPrefix = pathPrefix === "/" ? "" : pathPrefix.replace(/\/$/, "");
     const cleanPath = path === "/" ? "/" : `/${String(path).replace(/^\/+/, "")}`;
-
-    if (!cleanPrefix) {
-      return cleanPath;
-    }
-
-    if (cleanPath === "/") {
-      return `${cleanPrefix}/`;
-    }
-
+    if (!cleanPrefix) return cleanPath;
+    if (cleanPath === "/") return `${cleanPrefix}/`;
     return `${cleanPrefix}${cleanPath}`;
   });
 
   eleventyConfig.addFilter("dateLabel", (event) => {
-    if (!event || !event.startDate) {
-      return "";
-    }
-
+    if (!event || !event.startDate) return "";
     if (!event.endDate || event.endDate === event.startDate) {
       return formatDate(event.startDate, { includeWeekday: true });
     }
-
     return `${formatDate(event.startDate, { includeWeekday: true })} to ${formatDate(event.endDate)}`;
   });
 
   eleventyConfig.addFilter("shortDateLabel", (event) => {
-    if (!event || !event.startDate) {
-      return "";
-    }
-
+    if (!event || !event.startDate) return "";
     if (!event.endDate || event.endDate === event.startDate) {
       return formatShortDate(event.startDate);
     }
-
     return `${formatShortDate(event.startDate)} - ${formatShortDate(event.endDate)}`;
   });
 
   eleventyConfig.addFilter("timeLabel", (event) => {
-    if (!event || !event.startTime) {
-      return "See details";
-    }
-
-    if (!event.endTime) {
-      return formatTime(event.startTime);
-    }
-
+    if (!event || !event.startTime) return "See details";
+    if (!event.endTime) return formatTime(event.startTime);
     return `${formatTime(event.startTime)} - ${formatTime(event.endTime)}`;
   });
 
   eleventyConfig.addFilter("monthYearLabel", (monthKey = "") => {
     const [year, month] = monthKey.split("-").map(Number);
-
-    if (!year || !month) {
-      return monthKey;
-    }
-
+    if (!year || !month) return monthKey;
     return new Intl.DateTimeFormat("en-US", {
       month: "long",
       year: "numeric"
@@ -153,9 +98,9 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter("paragraphs", (text = "") => {
     return String(text)
       .split(/\n\s*\n/)
-      .map((paragraph) => paragraph.trim())
+      .map((p) => p.trim())
       .filter(Boolean)
-      .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
+      .map((p) => `<p>${escapeHtml(p)}</p>`)
       .join("");
   });
 

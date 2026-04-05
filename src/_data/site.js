@@ -9,7 +9,7 @@ module.exports = {
   tagline: "White Plains civic and neighborhood guide.",
   baseUrl: `${deployBaseUrl.replace(/\/$/, "")}${cleanCanonicalPrefix}`,
   pathPrefix: runtimePathPrefix,
-  themeColor: "#1F3A5F",
+  themeColor: "#0062B8",
   contactName: "Michael Dalton, President",
   email: "info@wpcna.org",
   location: "White Plains, New York",

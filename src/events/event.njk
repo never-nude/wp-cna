@@ -9,32 +9,31 @@ eleventyComputed:
   title: "{{ event.title }}"
   metaDescription: "{{ event.shortSummary }}"
   ogType: "article"
-  pageClass: "page-event-detail"
 ---
-<section class="page-hero page-hero--compact">
-  <div class="container page-hero__content">
-    <a class="back-link" href="{{ '/events/' | withPrefix }}">Back to events</a>
+<section class="page-hero">
+  <div class="wrap">
+    <a class="back-link" href="{{ '/events/' | withPrefix }}">Events</a>
     <p class="eyebrow">{{ event.category }}</p>
     <h1>{{ event.title }}</h1>
     <p>{{ event.shortSummary }}</p>
   </div>
 </section>
 
-<section class="section section--flush-top">
-  <div class="container detail-grid">
-    <article class="detail-main">
-      {% if event.displayImage %}
-        <div class="detail-image">
-          <img src="{{ event.displayImage | withPrefix }}" alt="" loading="eager">
-        </div>
-      {% endif %}
+<section class="section">
+  <div class="wrap">
+    <div class="detail-grid">
+      <article class="detail-main">
+        {% if event.displayImage %}
+          <div style="border-radius:var(--radius-lg);overflow:hidden;margin-bottom:1.5rem">
+            <img src="{{ event.displayImage | withPrefix }}" alt="" loading="eager">
+          </div>
+        {% endif %}
 
-      <div class="detail-copy">
-        <div class="detail-copy__meta">
+        <div class="detail-meta">
           <span class="tag">{{ event.category }}</span>
-          <span>Listed by {{ event.organizer }}</span>
+          <span style="font-size:0.85rem;color:var(--ink-muted)">{{ event.organizer }}</span>
           {% if event.status == "past" %}
-            <span class="event-card__status">Past event</span>
+            <span class="tag tag-muted">Past event</span>
           {% endif %}
         </div>
 
@@ -44,69 +43,50 @@ eleventyComputed:
         {% if event.secondaryLinks.length %}
           <div class="detail-links">
             <h3>More links</h3>
-            <ul class="footer-list">
+            <ul>
               {% for link in event.secondaryLinks %}
-                <li><a href="{{ link.url }}" target="_blank" rel="noreferrer">{{ link.label }}</a></li>
+                <li><a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }}</a></li>
               {% endfor %}
             </ul>
           </div>
         {% endif %}
-      </div>
-    </article>
+      </article>
 
-    <aside class="detail-sidebar">
-      <div class="detail-card">
-        <p class="eyebrow">At a Glance</p>
-        <dl class="detail-list">
-          <div>
-            <dt>Status</dt>
-            <dd>{% if event.status == "upcoming" %}Upcoming{% else %}Past event{% endif %}</dd>
-          </div>
-          <div>
-            <dt>Date</dt>
-            <dd>{{ event | dateLabel }}</dd>
-          </div>
-          <div>
-            <dt>Time</dt>
-            <dd>{{ event | timeLabel }}</dd>
-          </div>
-          <div>
-            <dt>Location</dt>
-            <dd>{{ event.locationName }}</dd>
-          </div>
-          <div>
-            <dt>Address</dt>
-            <dd>{{ event.locationAddress }}</dd>
-          </div>
-          <div>
-            <dt>Listed by</dt>
-            <dd>{{ event.sourceLabel }}</dd>
-          </div>
-        </dl>
-
-        {% if event.primaryAction %}
-          <a class="button button--large button--block" href="{{ event.primaryAction.url }}" {% if event.primaryAction.url.startsWith("http") %}target="_blank" rel="noreferrer"{% endif %}>
-            {{ event.primaryAction.label }}
-          </a>
-        {% endif %}
-      </div>
-    </aside>
+      <aside class="detail-sidebar">
+        <div class="sidebar-card">
+          <p class="eyebrow">At a Glance</p>
+          <dl>
+            <div><dt>Status</dt><dd>{% if event.status == "upcoming" %}Upcoming{% else %}Past{% endif %}</dd></div>
+            <div><dt>Date</dt><dd>{{ event | dateLabel }}</dd></div>
+            <div><dt>Time</dt><dd>{{ event | timeLabel }}</dd></div>
+            <div><dt>Location</dt><dd>{{ event.locationName }}</dd></div>
+            <div><dt>Address</dt><dd>{{ event.locationAddress }}</dd></div>
+            <div><dt>Source</dt><dd>{{ event.sourceLabel }}</dd></div>
+          </dl>
+          {% if event.primaryAction %}
+            <a class="btn btn-primary btn-block" href="{{ event.primaryAction.url }}" {% if event.primaryAction.url.startsWith("http") %}target="_blank" rel="noopener"{% endif %}>{{ event.primaryAction.label }}</a>
+          {% endif %}
+        </div>
+      </aside>
+    </div>
   </div>
 </section>
 
 {% if event.relatedEvents.length %}
   {% from "components/macros.njk" import eventCard %}
-  <section class="section section--tint">
-    <div class="container section__intro">
-      <div>
-        <p class="eyebrow">More Events</p>
-        <h2>More around White Plains</h2>
+  <section class="section section-alt">
+    <div class="wrap">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">More Events</p>
+          <h2>Related events</h2>
+        </div>
       </div>
-    </div>
-    <div class="container card-grid">
-      {% for related in event.relatedEvents %}
-        {{ eventCard(related) }}
-      {% endfor %}
+      <div class="card-grid">
+        {% for related in event.relatedEvents %}
+          {{ eventCard(related) }}
+        {% endfor %}
+      </div>
     </div>
   </section>
 {% endif %}

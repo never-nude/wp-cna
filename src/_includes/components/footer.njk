@@ -1,32 +1,28 @@
 <footer class="site-footer">
-  <div class="container site-footer__grid">
-    <div class="site-footer__block">
-      <p class="eyebrow">White Plains</p>
-      <h2>{{ site.name }}</h2>
-      <p>{{ site.purpose }}</p>
-    </div>
-
+  <div class="footer-inner">
     <div>
-      <p class="eyebrow">Contact</p>
-      <ul class="footer-list">
+      <p class="footer-brand">{{ site.shortName }}</p>
+      <p>{{ site.mission }}</p>
+    </div>
+    <div>
+      <h3>Contact</h3>
+      <ul>
         <li>{{ site.contactName }}</li>
         <li>{{ site.location }}</li>
         <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
       </ul>
-      <p class="site-footer__note">{{ site.meetingNote }}</p>
     </div>
-
     <div>
-      <p class="eyebrow">Useful Links</p>
-      <ul class="footer-list">
+      <h3>Community</h3>
+      <ul>
         {% for link in site.communityChannels %}
-          <li><a href="{{ link.url }}" target="_blank" rel="noreferrer">{{ link.label }}</a></li>
+          <li><a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }}</a></li>
         {% endfor %}
+        <li><a href="{{ site.currentSiteUrl }}" target="_blank" rel="noopener">WPCNA main site</a></li>
       </ul>
     </div>
   </div>
-  <div class="container site-footer__meta">
+  <div class="footer-bottom">
     <p>{{ site.footerNote }}</p>
-    <p><a href="{{ site.currentSiteUrl }}" target="_blank" rel="noreferrer">Current WPCNA site</a></p>
   </div>
 </footer>
