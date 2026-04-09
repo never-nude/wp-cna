@@ -1,5 +1,5 @@
 const runtimePathPrefix = process.env.SITE_PATH_PREFIX || "/";
-const canonicalPathPrefix = process.env.CANONICAL_PATH_PREFIX || process.env.SITE_PATH_PREFIX || "/wpcna";
+const canonicalPathPrefix = process.env.CANONICAL_PATH_PREFIX || process.env.SITE_PATH_PREFIX || "/wp-cna";
 const deployBaseUrl = process.env.SITE_BASE_URL || "https://never-nude.github.io";
 const cleanCanonicalPrefix = canonicalPathPrefix === "/" ? "" : canonicalPathPrefix.replace(/\/$/, "");
 
